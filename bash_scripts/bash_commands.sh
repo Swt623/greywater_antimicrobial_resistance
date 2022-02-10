@@ -1,3 +1,9 @@
+# convert fastq to fasta
+sed -n '1~4s/^@/>/p;2~4p' sample.fastq > sample.fasta
+
+# convert from fastq.gz to fasta
+gunzip -c sample.fastq.gz | awk '{if(NR%4==1) {printf(">%s\n",substr($0,2));} else if(NR%4==2) print;}' > sample.fasta
+
 # Count bin numbers
 sample=($(cat SampleNames.txt))
 cd ./reassembled_bins_metaspades_90_5
