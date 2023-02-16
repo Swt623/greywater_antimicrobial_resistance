@@ -20,3 +20,11 @@ export PATH=$PATH:/projects/p31421/software/metaWRAP/bin
 
 sample=($(cat SampleNames.txt))
 sample+=("raw_greywater_merged")
+
+#convert fastq.gz to fasta
+for i in {0..13}
+do
+	gunzip ${sample[$i]}_*_paired_1.fastq.gz
+	cat ${sample[$i]}_*_paired_1.fastq | awk '{if(NR%4==1) {printf(">%s\n",substr($0,2));} else if(NR%4==2) print;}' > ${sample[$i]}_*_paired_1.fasta
+	gzip ${sample[$i]}_*_paired_1.fastq
+done
